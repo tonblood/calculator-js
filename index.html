@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&display=swap');
+    </style>
+    <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="iphone-x">
+        <div class="side">
+          <div class="screen">
+            <div class="noti">
+                <div class="empty"></div>
+                <div class="notch" id="notch" align="center">
+                    
+                </div>
+                <div class="empty"></div>
+            </div>
+             <div class="calculator-app">
+                <div class="display">
+                    
+                    <div class="display-number" style="margin-right: 8px;">
+                        <span id="number-2" ></span>
+                        <div id="number-operator" class="display-operator"></div>
+                        <span id="number-1"></span>
+                    </div>
+                </div>
+                <div class="operator">
+                    <div class="digit-line">
+                        <button class="button-operator" onclick="onClickClear()">
+                            C
+                        </button>
+                        <button class="button-operator" onclick="onPercentage()" >
+                            %
+                        </button>
+                        <button class="button-operator" onclick="onClickOperator('÷')">
+                            ÷
+                        </button>
+                         <button class="button-operator" onclick="onDelete()">
+                            Del
+                        </button>
+                    </div>
+                    <div class="digit-line">
+                        <button onclick="onClickNumber('7')">
+                            7
+                        </button>
+                        <button onclick="onClickNumber('8')">
+                            8
+                        </button>
+                        <button onclick="onClickNumber('9')">
+                            9
+                        </button>
+                         <button class="button-operator" onclick="onClickOperator('×')">
+                            ×
+                        </button>
+                    </div>
+                    <div class="digit-line">
+                        <button onclick="onClickNumber('4')">
+                            4
+                        </button>
+                        <button onclick="onClickNumber('5')">
+                            5
+                        </button>
+                        <button onclick="onClickNumber('6')">
+                            6
+                        </button>
+                         <button class="button-operator" onclick="onClickOperator('-')">
+                            -
+                        </button>
+                    </div>
+                    <div class="digit-line">
+                        <button onclick="onClickNumber('1')">
+                            1
+                        </button>
+                        <button onclick="onClickNumber('2')">
+                            2
+                        </button>
+                        <button onclick="onClickNumber('3')">
+                            3
+                        </button>
+                         <button class="button-operator" onclick="onClickOperator('+')">
+                            +
+                        </button>
+                    </div>
+                    <div class="digit-line-zero">
+                        <button class="digit-zero" onclick="onClickNumber('0')">
+                            0
+                        </button>
+                        <button onclick="onClickNumber('.')">
+                            .
+                        </button>
+                         <button class="button-operator" onclick="onEqual()">
+                            =
+                        </button>
+                    </div>
+                </div>
+             </div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="header">
+          <div class="sensor-1"></div>
+          <div class="sensor-2"></div>
+          <div class="sensor-3"></div>
+        </div>
+        <div class="volume-button"></div>
+        <div class="power-button"></div>
+        
+      </div>
+</body>
+<script >
+            let tempnum1 = ''
+            let tempnum2 = ''
+            let numberOperator = ''
+            let islastestOperator = false
+            const messagealert = document.createElement('div')
+            messagealert.className = 'message'
+            const imgcleardata = document.createElement('img')
+            imgcleardata.src = './icon/check-solid.svg'
+            imgcleardata.className = 'icon'
+            const textCleardata = document.createElement('span')
+            textCleardata.innerText = 'clear data complete'
+            const onClickNumber = (value) => {
+                if ( tempnum1 === '0') {
+                    tempnum1 = value
+                } else if ((tempnum1.slice(0,tempnum1.length) !== '0' || value !== '0') && tempnum1.length < 9) {
+                    if (!(tempnum1.includes('.') && value ==='.')) {
+                        tempnum1 = tempnum1+value
+                    }
+                    
+                }
+                islastestOperator = false
+                document.getElementById('number-1').innerHTML = tempnum1
+                
+            }
+            const onClickOperator = (operator) => {
+                
+                if (tempnum1 !== '') {
+                    if (tempnum1 !== '' && numberOperator !== '' && tempnum2 !== '') {
+                        onEqual()
+                    }
+                    islastestOperator = true
+                    numberOperator = operator
+                    document.getElementById('number-operator').innerHTML = operator
+                    tempnum2 = tempnum1
+                    document.getElementById('number-2').innerHTML = tempnum2
+                    tempnum1 = ''
+                    document.getElementById('number-1').innerHTML = tempnum1
+                    
+                }
+            } 
+
+            const onClickClear = () => {
+                const divmessage = document.getElementById('notch')
+                tempnum1 = ''
+                tempnum2 = ''
+                numberOperator = ''
+                document.getElementById('number-1').innerHTML = tempnum1
+                document.getElementById('number-2').innerHTML = tempnum2
+                document.getElementById('number-operator').innerHTML = numberOperator
+                messagealert.appendChild(imgcleardata)
+                messagealert.appendChild(textCleardata)
+                divmessage.appendChild(messagealert)
+                setTimeout(function () {
+                    messagealert.remove()
+                },4000)
+                // setTimeout(textCleardata.remove(),10000)
+            }
+
+            const onDelete = () => {
+                if (islastestOperator) {
+                    operator = ''
+                    document.getElementById('number-operator').innerHTML = operator
+                    islastestOperator = false
+                    tempnum1 = tempnum2
+                    document.getElementById('number-1').innerHTML = tempnum1
+                    tempnum2 = ''
+                    document.getElementById('number-2').innerHTML = tempnum2
+                } else {
+                    tempnum1 =  tempnum1.slice(0, tempnum1.length - 1)
+                    document.getElementById('number-1').innerHTML = tempnum1
+                    if (tempnum1.length === 0) {
+                        islastestOperator = true
+                    }
+                }
+
+            }
+
+            const onEqual = () => {
+                if (numberOperator === '+') {
+                    tempnum1 = Number(tempnum2) + Number(tempnum1)
+                } else if (numberOperator === '-') {
+                    tempnum1 = Number(tempnum2) - Number(tempnum1)
+                } else if (numberOperator === '×') {
+                    tempnum1 = Number(tempnum2) * Number(tempnum1)
+                } else if (numberOperator === '÷') {
+                    tempnum1 = Number(tempnum2) / Number(tempnum1)
+                } 
+                // else if (numberOperator === '%') {
+                //     tempnum1 = Number(tempnum1) - Number(tempnum2)
+                // }
+                tempnum1 = tempnum1.toString()
+                document.getElementById('number-1').innerHTML = tempnum1
+                numberOperator = ''
+                tempnum2 = ''
+                document.getElementById('number-operator').innerHTML = numberOperator
+                document.getElementById('number-2').innerHTML = tempnum2
+            }
+
+            const onPercentage = () => {
+                let temnumdisplay = tempnum1
+                tempnum1 = (tempnum2 * tempnum1) / 100
+                document.getElementById('number-1').innerHTML = temnumdisplay+'%'
+                setTimeout(function () {
+                    document.getElementById('number-1').innerHTML = tempnum1.toString()
+                },1000)
+            }
+        </script>
+</html>
